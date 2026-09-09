@@ -1,0 +1,49 @@
+name: Nöbetçi Eczane Güncelle
+
+on:
+  schedule:
+    - cron: '0 */2 * * *'      # her 2 saatte bir (UTC)
+  workflow_dispatch:            # elle çalıştırma butonu
+
+# Aynı anda tek çalışma
+concurrency:
+  group: eczane-scrape
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Depoyu al
+        uses: actions/checkout@v4
+
+      - name: Node kur
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Bağımlılıklar + Chromium
+        run: |
+          npm install
+          npx playwright install --with-deps chromium
+
+      - name: Kazı
+        run: npm run scrape
+        env:
+          ESZAMANLI: '5'
+
+      - name: eczaneler.json'u işle
+        run: |
+          if [ -n "$(git status --porcelain eczaneler.json)" ]; then
+            git config user.name  "eczane-bot"
+            git config user.email "eczane-bot@users.noreply.github.com"
+            git add eczaneler.json
+            git commit -m "eczane: $(date -u +'%Y-%m-%d %H:%M UTC')"
+            git push
+          else
+            echo "Değişiklik yok."
+          fi
