@@ -16,7 +16,7 @@ permissions:
 jobs:
   scrape:
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 20
     steps:
       - name: Depoyu al
         uses: actions/checkout@v4
@@ -24,7 +24,7 @@ jobs:
       - name: Node kur
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
 
       - name: Bağımlılıklar + Chromium
         run: |
