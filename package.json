@@ -1,0 +1,13 @@
+{
+  "name": "gudulvakfi-eczane-scraper",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "eczaneler.gen.tr nöbetçi eczane kazıyıcı — GitHub Actions ile 2 saatte bir çalışır, eczaneler.json üretir.",
+  "scripts": {
+    "scrape": "node scrape.mjs"
+  },
+  "dependencies": {
+    "playwright": "^1.47.0"
+  }
+}
